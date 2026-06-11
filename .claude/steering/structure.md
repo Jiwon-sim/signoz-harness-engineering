@@ -8,7 +8,7 @@ cmd/            진입점. community/ 와 enterprise/ 빌드 타깃 분리
 pkg/            Community 백엔드 핵심 (Apache 2.0)
 ee/             Enterprise 백엔드 (상용 라이선스) — pkg/ 와 미러링되는 구조
 frontend/       React/TS 웹 앱
-deploy/         Docker / docker-swarm 배포 (→ 향후 K8s 추가)
+deploy/         Docker / docker-swarm 배포
 tests/          Python pytest 통합·E2E (e2e/, integration/, fixtures/, seeder/)
 conf/           기본 설정 파일
 docs/           제품·설정 문서

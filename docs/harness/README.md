@@ -35,8 +35,6 @@ Tasks     (tasks.md)             실행 작업 + 테스트 추적    ← /gen-te
 | [glossary.md](./glossary.md) | 용어집 |
 | [onboarding.md](./onboarding.md) | 신규 기여자 온보딩 |
 | [contribution-checklist.md](./contribution-checklist.md) | 기여 전 체크리스트 |
-| [ci-cd-roadmap.md](./ci-cd-roadmap.md) | Jenkins CI/CD 분리 로드맵 |
-| [k8s-deployment.md](./k8s-deployment.md) | 로컬 Kubernetes 배포 가이드 |
 
 ## 빠른 시작
 1. 기존 코드 파악: `/analyze-feature <대상>`

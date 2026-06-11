@@ -42,7 +42,7 @@ CLAUDE.md                 ← 진입점 (이 파일)
 ├── commands/             ← 하네스 워크플로우 슬래시 커맨드
 ├── agents/               ← 서브에이전트 (Playwright 등)
 └── settings.json         ← 플러그인 · 훅 설정
-docs/harness/             ← 사람용 가이드 문서 (요구사항/아키텍처/CI-CD/K8s)
+docs/harness/             ← 사람용 가이드 문서 (요구사항/아키텍처)
 ```
 
 ## 핵심 원칙 (요약 — 자세한 내용은 harness-principles.md)

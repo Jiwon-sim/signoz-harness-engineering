@@ -52,9 +52,7 @@
 - 차트: uPlot/Chart.js/visx. UI: AntD 5 + `@signozhq/ui`.
 
 ### 5. 배포 (`deploy/`)
-- 현재: Docker, docker-swarm.
-- **향후 (하네스 목표)**: Jenkins CI/CD 분리 → 로컬 Kubernetes 배포.
-  ([ci-cd-roadmap.md](./ci-cd-roadmap.md), [k8s-deployment.md](./k8s-deployment.md))
+- Docker, docker-swarm 기반 (`deploy/docker`, `deploy/docker-swarm`).
 
 ## "어디를 건드리나" 빠른 판단
 | 작업 종류 | 주 위치 |
