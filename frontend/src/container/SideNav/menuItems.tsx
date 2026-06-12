@@ -338,6 +338,13 @@ export const settingsNavSections: SettingsNavSection[] = [
 				itemKey: 'account',
 			},
 			{
+				key: ROUTES.SYSTEM_HEALTH,
+				label: 'System Health',
+				icon: <HardDrive size={16} />,
+				isEnabled: true,
+				itemKey: 'system-health',
+			},
+			{
 				key: ROUTES.ALL_CHANNELS,
 				label: 'Notification Channels',
 				icon: <FileKey2 size={16} />,

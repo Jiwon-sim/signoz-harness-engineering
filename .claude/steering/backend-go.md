@@ -41,6 +41,4 @@ make go-test
 golangci-lint run   # 또는 해당 패키지 대상
 make go-build-community   # 빌드 통과 확인
 ```
-린트·빌드·테스트가 실제로 통과하기 전에는 "완료"라고 보고하지 않는다. ([[harness-principles]])
-
-관련: [[tech]] · [[structure]] · [[database]] · [[testing]]
+린트·빌드·테스트가 실제로 통과하기 전에는 "완료"라고 보고하지 않는다. (하네스 원칙: `CLAUDE.md`)

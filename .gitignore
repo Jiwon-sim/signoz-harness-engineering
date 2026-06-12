@@ -232,3 +232,6 @@ cython_debug/
 pyrightconfig.json
 
 
+
+# 하네스 정리: 로컬 보존용 (git 제외)
+archive/

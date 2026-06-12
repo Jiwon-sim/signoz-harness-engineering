@@ -1,6 +1,6 @@
 # Requirements — <기능명>
 
-> EARS(Easy Approach to Requirements Syntax) 형식. 작성법: `docs/harness/requirements-guide.md`.
+> EARS(Easy Approach to Requirements Syntax) 형식. 작성법: `/create-spec` 커맨드의 "EARS 작성법" 절 참조.
 > 상태: Draft | Reviewed | Approved   ·   작성일: YYYY-MM-DD   ·   에디션: Community | Enterprise
 
 ## 1. 개요 (Introduction)

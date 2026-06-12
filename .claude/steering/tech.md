@@ -48,4 +48,4 @@
 - 새 서버 상태 호출은 **react-query + orval 생성 훅** 사용. 수기 axios 호출 지양 (최근 커밋에서 deprecate).
 - 새 Go 에러는 반드시 `pkg/errors`. 새 로그는 `slog` + snake_case 키.
 
-관련: [[backend-go]] · [[frontend-react]] · [[database]] · [[testing]]
+

@@ -13,8 +13,7 @@ tests/          Python pytest 통합·E2E (e2e/, integration/, fixtures/, seeder
 conf/           기본 설정 파일
 docs/           제품·설정 문서
 scripts/        빌드·운영 스크립트
-.claude/        ★ 하네스 (steering/specs/commands/agents)
-docs/harness/   ★ 하네스 사람용 가이드 문서
+.claude/        ★ 하네스 (steering/specs/commands)
 ```
 
 ## 백엔드 모듈 패턴 (`pkg/`)
@@ -45,8 +44,7 @@ docs/harness/   ★ 하네스 사람용 가이드 문서
 4. 자동 생성물(`api/generated`, 마이그레이션 일부)은 직접 수정하지 않는다.
 
 ## 하네스 산출물 배치
-- 항상 참고 규칙 → `.claude/steering/`
+- 항상 참고 규칙 → `.claude/steering/` · 하네스 원칙 → `CLAUDE.md`
 - 기능 스펙 → `.claude/specs/<기능명>/{requirements,design,tasks}.md`
-- 사람용 가이드 → `docs/harness/`
+- 테스트 케이스 → `.claude/specs/<기능명>/test-cases.md` (템플릿: `.claude/specs/_template/test-case-template.md`)
 
-관련: [[product]] · [[backend-go]] · [[frontend-react]]

@@ -2234,6 +2234,22 @@ func (r *ClickHouseReader) GetDisks(ctx context.Context) (*[]model.DiskItem, *mo
 	return &diskItems, nil
 }
 
+func (r *ClickHouseReader) GetDiskUsage(ctx context.Context) ([]model.DiskInfo, *model.ApiError) {
+	ctx = ctxtypes.NewContextWithCommentVals(ctx, map[string]string{
+		instrumentationtypes.CodeNamespace:    "clickhouse-reader",
+		instrumentationtypes.CodeFunctionName: "GetDiskUsage",
+	})
+	diskInfos := []model.DiskInfo{}
+
+	query := "SELECT name, free_space, total_space FROM system.disks"
+	if err := r.db.Select(ctx, &diskInfos, query); err != nil {
+		r.logger.Error("Error in processing sql query", errorsV2.Attr(err))
+		return nil, &model.ApiError{Typ: model.ErrorExec, Err: fmt.Errorf("error while getting disk usage. Err=%v", err)}
+	}
+
+	return diskInfos, nil
+}
+
 func getLocalTableNameArray(tableNames []string) []string {
 	var localTableNames []string
 	for _, name := range tableNames {

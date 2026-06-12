@@ -18,6 +18,7 @@ import {
 	roleDetails,
 	rolesSettings,
 	serviceAccountsSettings,
+	systemHealthSettings,
 } from './config';
 
 export const getRoutes = (
@@ -47,6 +48,7 @@ export const getRoutes = (
 	}
 
 	settings.push(...generalSettings(t));
+	settings.push(...systemHealthSettings());
 
 	if (isCurrentOrgSettings) {
 		settings.push(...organizationSettings(t));

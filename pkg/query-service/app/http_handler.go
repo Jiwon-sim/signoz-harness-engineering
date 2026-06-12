@@ -1724,10 +1724,81 @@ func (aH *APIHandler) getFeatureFlags(w http.ResponseWriter, r *http.Request) {
 	aH.Respond(w, featureSet)
 }
 
+// diskUsageUnhealthyThreshold is the disk used-percent at or above which the disk
+// check is reported as unhealthy.
+const diskUsageUnhealthyThreshold = 90.0
+
+// healthChecker is the minimal subset of interfaces.Reader needed for detailed health.
+// Keeping it small makes getHealth's logic unit-testable with a lightweight fake.
+type healthChecker interface {
+	CheckClickHouse(ctx context.Context) error
+	GetDiskUsage(ctx context.Context) ([]model.DiskInfo, *model.ApiError)
+}
+
+// buildDetailedHealth runs each dependency check and returns the response plus the
+// HTTP status code (200 when all checks pass, 503 when any is unhealthy).
+func buildDetailedHealth(ctx context.Context, hc healthChecker) (model.DetailedHealth, int) {
+	checks := map[string]model.CheckResult{}
+	status := "ok"
+	code := http.StatusOK
+	degrade := func() {
+		status = "degraded"
+		code = http.StatusServiceUnavailable
+	}
+
+	// clickhouse check (connection + latency).
+	start := time.Now()
+	if err := hc.CheckClickHouse(ctx); err != nil {
+		checks["clickhouse"] = model.CheckResult{Status: "unhealthy", Error: err.Error()}
+		degrade()
+	} else {
+		latency := time.Since(start).Milliseconds()
+		checks["clickhouse"] = model.CheckResult{Status: "healthy", LatencyMs: &latency}
+	}
+
+	// disk check (worst used-percent across configured disks).
+	disks, apiErr := hc.GetDiskUsage(ctx)
+	if apiErr != nil {
+		checks["disk"] = model.CheckResult{Status: "unhealthy", Error: apiErr.Err.Error()}
+		degrade()
+	} else {
+		var maxUsed float64
+		var free, total uint64
+		for _, d := range disks {
+			if d.TotalBytes == 0 {
+				continue
+			}
+			used := float64(d.TotalBytes-d.FreeBytes) / float64(d.TotalBytes) * 100
+			if used >= maxUsed {
+				maxUsed, free, total = used, d.FreeBytes, d.TotalBytes
+			}
+		}
+		disk := model.CheckResult{FreeBytes: &free, TotalBytes: &total, UsedPercent: &maxUsed}
+		if maxUsed >= diskUsageUnhealthyThreshold {
+			disk.Status = "unhealthy"
+			degrade()
+		} else {
+			disk.Status = "ok"
+		}
+		checks["disk"] = disk
+	}
+
+	return model.DetailedHealth{Status: status, Checks: checks}, code
+}
+
 // getHealth is used to check the health of the service.
-// 'live' query param can be used to check liveliness of
-// the service by checking the database connection.
+// 'live' query param checks liveliness by checking the database connection.
+// 'detailed' query param returns per-dependency status (clickhouse, disk) with
+// an appropriate HTTP status code, suitable for richer monitoring/K8s probes.
 func (aH *APIHandler) getHealth(w http.ResponseWriter, r *http.Request) {
+	if _, ok := r.URL.Query()["detailed"]; ok {
+		health, code := buildDetailedHealth(r.Context(), aH.reader)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(code)
+		_ = json.NewEncoder(w).Encode(health)
+		return
+	}
+
 	_, ok := r.URL.Query()["live"]
 	if ok {
 		err := aH.reader.CheckClickHouse(r.Context())

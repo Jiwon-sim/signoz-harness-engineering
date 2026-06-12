@@ -9,7 +9,7 @@ argument-hint: <기능명>
 
 너는 `.claude/specs/$ARGUMENTS/` 의 요구사항(EARS)을 **테스트 케이스로 변환**한다.
 각 REQ 의 수용 기준(AC)은 최소 1개의 테스트로 추적되어야 한다.
-참고: `.claude/steering/testing.md`, `docs/harness/templates/test-case-template.md`.
+참고: `.claude/steering/testing.md`, `.claude/specs/_template/test-case-template.md`.
 
 ## 절차
 
@@ -24,7 +24,7 @@ argument-hint: <기능명>
      - 통합/E2E → pytest (`tests/`) 또는 Playwright 에이전트
 
 3. **테스트 케이스 문서화**
-   - `docs/harness/test-cases/$ARGUMENTS.md` 에 테스트 케이스 표를 작성한다.
+   - `.claude/specs/$ARGUMENTS/test-cases.md` 에 테스트 케이스 표를 작성한다 (템플릿: `.claude/specs/_template/test-case-template.md`).
    - 각 TC: ID, 대상 REQ/AC, 전제조건, 입력, 기대결과, 레이어, 자동화 여부.
 
 4. **테스트 코드 초안 (선택)**

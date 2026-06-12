@@ -28,7 +28,7 @@
 
 ## 기능별 테스트 케이스 (하네스 핵심 산출물)
 - 스펙의 각 요구사항(EARS)은 **최소 1개의 테스트 케이스**로 추적된다.
-- 테스트 케이스는 `docs/harness/templates/test-case-template.md` 양식을 따른다.
+- 테스트 케이스는 `.claude/specs/_template/test-case-template.md` 양식을 따른다.
 - `/gen-tests <기능명>` 커맨드가 스펙 → 테스트 케이스 초안을 생성한다.
 
 ## 커버리지 기준 (가이드)
@@ -37,6 +37,5 @@
 
 ## 완료 정의 (Definition of Done)
 기능이 "완료"되려면: 관련 단위 테스트 통과 + 린트/타입체크 통과 + 빌드 성공.
-검증을 실제로 실행하지 않고 완료 보고 금지. ([[harness-principles]])
+검증을 실제로 실행하지 않고 완료 보고 금지. (하네스 원칙: `CLAUDE.md`)
 
-관련: [[backend-go]] · [[frontend-react]] · [[harness-principles]]

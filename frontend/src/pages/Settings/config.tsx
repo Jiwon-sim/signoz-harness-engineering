@@ -13,6 +13,7 @@ import MySettings from 'container/MySettings';
 import OrganizationSettings from 'container/OrganizationSettings';
 import RolesSettings from 'container/RolesSettings';
 import RoleDetailsPage from 'container/RolesSettings/RoleDetails';
+import SystemHealth from 'container/SystemHealth/SystemHealth';
 import { TFunction } from 'i18next';
 import {
 	Backpack,
@@ -21,6 +22,7 @@ import {
 	Building,
 	Cpu,
 	CreditCard,
+	HardDrive,
 	Keyboard,
 	Pencil,
 	Plus,
@@ -98,6 +100,19 @@ export const generalSettings = (t: TFunction): RouteTabProps['routes'] => [
 		),
 		route: ROUTES.SETTINGS,
 		key: ROUTES.SETTINGS,
+	},
+];
+
+export const systemHealthSettings = (): RouteTabProps['routes'] => [
+	{
+		Component: SystemHealth,
+		name: (
+			<div className="periscope-tab">
+				<HardDrive size={16} /> System Health
+			</div>
+		),
+		route: ROUTES.SYSTEM_HEALTH,
+		key: ROUTES.SYSTEM_HEALTH,
 	},
 ];
 
