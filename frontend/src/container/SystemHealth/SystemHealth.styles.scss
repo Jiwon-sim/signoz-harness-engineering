@@ -1,0 +1,152 @@
+.system-health {
+	padding: 24px;
+
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 12px;
+		margin-bottom: 20px;
+	}
+
+	&__title {
+		margin: 0 !important;
+		font-size: 22px;
+		font-weight: 600;
+	}
+
+	&__grid {
+		width: 100%;
+	}
+}
+
+.overall-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 12px;
+	border-radius: 999px;
+	font-size: 13px;
+	font-weight: 600;
+
+	&--ok {
+		color: #3fb950;
+		background: rgba(63, 185, 80, 0.12);
+	}
+
+	&--bad {
+		color: #f85149;
+		background: rgba(248, 81, 73, 0.12);
+	}
+}
+
+.status-dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	display: inline-block;
+
+	&--ok {
+		background: #3fb950;
+		box-shadow: 0 0 6px rgba(63, 185, 80, 0.9);
+	}
+
+	&--bad {
+		background: #f85149;
+		box-shadow: 0 0 6px rgba(248, 81, 73, 0.9);
+	}
+}
+
+.health-card {
+	height: 100%;
+
+	&__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 16px;
+	}
+
+	&__name {
+		margin: 0 !important;
+		font-size: 15px;
+		font-weight: 600;
+	}
+
+	&__status {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 12px;
+		font-weight: 600;
+		text-transform: capitalize;
+
+		&--ok {
+			color: #3fb950;
+		}
+		&--bad {
+			color: #f85149;
+		}
+	}
+
+	&__metric {
+		display: flex;
+		align-items: baseline;
+		gap: 6px;
+		margin-bottom: 4px;
+	}
+
+	&__value {
+		font-size: 44px;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	&__unit {
+		font-size: 18px;
+		font-weight: 500;
+		color: #8b949e;
+	}
+
+	&__label {
+		font-size: 12px;
+		color: #8b949e;
+	}
+
+	&__error {
+		display: block;
+		margin-top: 12px;
+		font-size: 12px;
+		color: #f85149;
+	}
+}
+
+.progress-track {
+	width: 100%;
+	height: 8px;
+	border-radius: 999px;
+	background: rgba(139, 148, 158, 0.2);
+	margin: 16px 0 10px;
+	overflow: hidden;
+}
+
+.progress-fill {
+	height: 100%;
+	border-radius: 999px;
+	transition: width 0.3s ease;
+
+	&--ok {
+		background: #3fb950;
+	}
+	&--bad {
+		background: #f85149;
+	}
+}
+
+.disk-capacity {
+	display: flex;
+	justify-content: space-between;
+	font-size: 12px;
+	color: #8b949e;
+}

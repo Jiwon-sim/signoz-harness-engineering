@@ -1749,7 +1749,10 @@ func buildDetailedHealth(ctx context.Context, hc healthChecker) (model.DetailedH
 	// clickhouse check (connection + latency).
 	start := time.Now()
 	if err := hc.CheckClickHouse(ctx); err != nil {
-		checks["clickhouse"] = model.CheckResult{Status: "unhealthy", Error: err.Error()}
+		// Log raw error for operators; response stays generic because this endpoint
+		// is unauthenticated and the driver error can leak DSN/host details.
+		slog.ErrorContext(ctx, "health_check_failed", slog.String("check", "clickhouse"), slog.String("error", err.Error()))
+		checks["clickhouse"] = model.CheckResult{Status: "unhealthy", Error: "clickhouse unavailable"}
 		degrade()
 	} else {
 		latency := time.Since(start).Milliseconds()
@@ -1759,7 +1762,8 @@ func buildDetailedHealth(ctx context.Context, hc healthChecker) (model.DetailedH
 	// disk check (worst used-percent across configured disks).
 	disks, apiErr := hc.GetDiskUsage(ctx)
 	if apiErr != nil {
-		checks["disk"] = model.CheckResult{Status: "unhealthy", Error: apiErr.Err.Error()}
+		slog.ErrorContext(ctx, "health_check_failed", slog.String("check", "disk"), slog.String("error", apiErr.Err.Error()))
+		checks["disk"] = model.CheckResult{Status: "unhealthy", Error: "disk usage unavailable"}
 		degrade()
 	} else {
 		var maxUsed float64

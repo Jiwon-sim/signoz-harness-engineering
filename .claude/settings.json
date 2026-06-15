@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/credentials*)",
+      "Write(**/api/generated/**)",
+      "Edit(**/api/generated/**)",
+      "Write(**/types/generated/**)",
+      "Edit(**/types/generated/**)",
+      "Edit(**/pnpm-lock.yaml)",
+      "Edit(**/go.sum)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(rm -rf:*)"
+    ],
+    "allow": [
+      "Bash(go test:*)",
+      "Bash(go build:*)",
+      "Bash(go vet:*)",
+      "Bash(pnpm tsgo:*)",
+      "Bash(pnpm oxlint:*)",
+      "Bash(pnpm jest:*)",
+      "Bash(pnpm build:*)"
+    ]
+  }
+}

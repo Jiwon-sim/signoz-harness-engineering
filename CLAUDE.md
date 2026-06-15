@@ -23,7 +23,9 @@ Kiro식 spec-driven(Steering→Specs→Tasks)을 Claude Code로 구현한 SigNoz
 
 ## Workflow
 
-analyze → create-spec → implement → gen-tests → verify
+analyze → create-spec → implement → gen-tests → verify → review
+
+> **review**: 새 로직·여러 파일·API·보안·DB 변경이면 `/code-review`(AI 자동, 기술 품질) → 사람 승인(도메인·보안 정책). 오타·주석·한 줄 수정은 생략. verify(빌드·린트·테스트 통과) 뒤에 둔다.
 
 ## Commands
 

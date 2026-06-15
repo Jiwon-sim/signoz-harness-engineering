@@ -26,8 +26,12 @@
 ## 상태 관리
 - 신규: **Zustand 5**. 서버 상태: **react-query**. 레거시 Redux 는 유지보수만.
 
-## 스타일
+## 스타일 · UI 컴포넌트
 - SCSS + styled-components. 디자인 토큰 `@signozhq/design-tokens`, UI `@signozhq/ui`, AntD 5.
+- **UI 컴포넌트는 `@signozhq/ui` 우선.** 일부 antd 컴포넌트는 oxlint 가 import 를 금지한다(작성 전 숙지 → 재작업 방지):
+  - ❌ antd `Typography` → ✅ `@signozhq/ui/typography` `Typography`
+  - ❌ antd `Tag` → ✅ `@signozhq/ui/badge` `Badge` (색은 토큰: `forest`/`cherry`/`amber`/`vanilla` 등, `green`/`red` 아님)
+  - `Card`·`Spin` 등은 antd 사용 허용. 신규 컴포넌트는 먼저 `@signozhq/ui` 에 있는지 확인.
 
 ## 완료 전 검증 (필수 — AGENTS.md "FORCED VERIFICATION")
 ```

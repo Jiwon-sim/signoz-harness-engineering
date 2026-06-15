@@ -42,14 +42,15 @@ describe('SystemHealth', () => {
 
 		render(<SystemHealth />);
 
-		expect(screen.getByTestId('system-health-overall')).toHaveTextContent('ok');
+		expect(screen.getByTestId('system-health-overall')).toHaveTextContent(
+			'All Systems Operational',
+		);
 		expect(screen.getByTestId('health-clickhouse-status')).toHaveTextContent(
 			'healthy',
 		);
-		expect(screen.getByTestId('health-clickhouse-latency')).toHaveTextContent(
-			'3 ms',
-		);
+		expect(screen.getByTestId('health-clickhouse-latency')).toHaveTextContent('3');
 		expect(screen.getByTestId('health-disk-status')).toHaveTextContent('ok');
+		expect(screen.getByTestId('health-disk-usage')).toHaveTextContent('50.0');
 	});
 
 	it('renders a degraded (503) response without crashing (AC-8.2)', () => {
@@ -70,7 +71,7 @@ describe('SystemHealth', () => {
 		render(<SystemHealth />);
 
 		expect(screen.getByTestId('system-health-overall')).toHaveTextContent(
-			'degraded',
+			'Degraded',
 		);
 		expect(screen.getByTestId('health-clickhouse-error')).toHaveTextContent(
 			'connection refused',

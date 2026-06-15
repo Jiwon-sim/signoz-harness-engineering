@@ -1,11 +1,13 @@
-import { Badge } from '@signozhq/ui/badge';
 import { Typography } from '@signozhq/ui/typography';
-import { Spin } from 'antd';
+import { Col, Row, Spin } from 'antd';
 import { useGetDetailedHealth } from 'hooks/health/useGetDetailedHealth';
 import { DetailedHealth } from 'types/api/health/getDetailedHealth';
 
-import HealthCard from './HealthCard';
+import ClickHouseCard from './ClickHouseCard';
+import DiskCard from './DiskCard';
 import { isHealthyStatus } from './utils';
+
+import './SystemHealth.styles.scss';
 
 function SystemHealth(): JSX.Element {
 	const { data, isLoading, isError } = useGetDetailedHealth();
@@ -18,29 +20,38 @@ function SystemHealth(): JSX.Element {
 
 	if (isError || !payload) {
 		return (
-			<div data-testid="system-health-error">
+			<div className="system-health" data-testid="system-health-error">
 				<Typography.Text>Failed to load system health.</Typography.Text>
 			</div>
 		);
 	}
 
 	const overallHealthy = isHealthyStatus(payload.status);
+	const tone = overallHealthy ? 'ok' : 'bad';
 
 	return (
-		<div data-testid="system-health-page">
-			<Typography.Title>System Health</Typography.Title>
-			<div data-testid="system-health-overall">
-				<Badge color={overallHealthy ? 'forest' : 'cherry'} variant="outline">
-					{payload.status}
-				</Badge>
-			</div>
+		<div className="system-health" data-testid="system-health-page">
+			<header className="system-health__header">
+				<Typography.Title className="system-health__title">
+					System Health
+				</Typography.Title>
+				<span
+					className={`overall-status overall-status--${tone}`}
+					data-testid="system-health-overall"
+				>
+					<span className={`status-dot status-dot--${tone}`} />
+					{overallHealthy ? 'All Systems Operational' : 'Degraded'}
+				</span>
+			</header>
 
-			<HealthCard
-				title="ClickHouse"
-				testId="health-clickhouse"
-				check={payload.checks.clickhouse}
-			/>
-			<HealthCard title="Disk" testId="health-disk" check={payload.checks.disk} />
+			<Row gutter={[16, 16]} className="system-health__grid">
+				<Col xs={24} md={12}>
+					<ClickHouseCard check={payload.checks.clickhouse} />
+				</Col>
+				<Col xs={24} md={12}>
+					<DiskCard check={payload.checks.disk} />
+				</Col>
+			</Row>
 		</div>
 	);
 }
