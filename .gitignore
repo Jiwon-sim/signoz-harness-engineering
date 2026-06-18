@@ -3,6 +3,7 @@ node_modules
 
 # editor
 .vscode
+*.swp
 !.vscode/settings.json
 .zed
 .idea
@@ -235,3 +236,6 @@ pyrightconfig.json
 
 # 하네스 정리: 로컬 보존용 (git 제외)
 archive/
+
+# 하네스 hook 런타임 로그
+.claude/hooks/hook.log

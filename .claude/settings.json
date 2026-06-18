@@ -27,5 +27,28 @@
       "Bash(pnpm jest:*)",
       "Bash(pnpm build:*)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/verify-reminder.js"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/verify-reminder.js"
+          }
+        ]
+      }
+    ]
   }
 }
