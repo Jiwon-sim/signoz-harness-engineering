@@ -11,7 +11,7 @@ metadata:
 spec:
   serviceAccountName: jenkins-deployer        # 배포 권한(in-cluster). RBAC YAML 먼저 apply.
   hostAliases:                                # kaniko 파드가 harbor.nextonm.com 을 찾게
-    - ip: "192.168.20.102"                    # ← 워커 노드 IP (아무 워커 하나)
+    - ip: "192.168.20.102"                    # 워커 노드 IP 
       hostnames: ["harbor.nextonm.com"]
   containers:
     - name: kaniko
@@ -19,15 +19,15 @@ spec:
       command: ["sleep"]
       args: ["infinity"]
       resources:
-        requests: { cpu: "1", memory: "2Gi" }   # 멀티스테이지(go+pnpm) 빌드라 넉넉히
-        limits:   { cpu: "2", memory: "4Gi" }
+        requests: { cpu: "200m", memory: "512Mi" }   # 멀티스테이지(go+pnpm) 빌드라 넉넉히
+        limits:   { cpu: "1", memory: "2Gi" }
     - name: deployer
       image: alpine/k8s:1.30.5                  # helm + kubectl 포함
       command: ["sleep"]
       args: ["infinity"]
       resources:
-        requests: { cpu: "250m", memory: "512Mi" }
-        limits:   { cpu: "1", memory: "1Gi" }
+        requests: { cpu: "100mm", memory: "128Mi" }
+        limits:   { cpu: "500m", memory: "512Mi" }
 '''
     }
   }
