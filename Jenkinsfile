@@ -26,14 +26,12 @@ spec:
       command: ["sleep"]
       args: ["infinity"]
       resources:
-        requests: { cpu: "100mm", memory: "128Mi" }
+        requests: { cpu: "100m", memory: "128Mi" }
         limits:   { cpu: "500m", memory: "512Mi" }
 '''
     }
   }
-
-  triggers { pollSCM('* * * * *') }            
-
+        
   parameters {
     string(name: 'HARBOR_REGISTRY', defaultValue: 'harbor.nextonm.com:30080', description: 'Harbor 주소(host:port, HTTP)')
     string(name: 'HARBOR_PROJECT',  defaultValue: 'signoz',          description: 'Harbor 프로젝트')
@@ -42,13 +40,6 @@ spec:
     string(name: 'HELM_RELEASE',    defaultValue: 'signoz',          description: 'Helm 릴리스명')
     booleanParam(name: 'REGISTRY_INSECURE', defaultValue: true,      description: 'HTTP/self-signed Harbor면 true')
     booleanParam(name: 'DEPLOY',    defaultValue: false,             description: '배포 수행 여부(첫 검증은 false 권장)')
-  }
-
-  options {
-    timestamps()
-    disableConcurrentBuilds()
-    timeout(time: 60, unit: 'MINUTES')
-    buildDiscarder(logRotator(numToKeepStr: '20'))
   }
 
   environment {
