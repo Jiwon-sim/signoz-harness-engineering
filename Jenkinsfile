@@ -26,16 +26,6 @@ spec:
     env:
     - name: DOCKER_CONFIG
       value: /kaniko/.docker
-    resources:
-      requests:
-        cpu: "200m"
-        memory: "1Gi"
-        ephemeral-storage: "4Gi"
-      limits:
-        cpu: "1"
-        memory: "3Gi"
-        ephemeral-storage: "8Gi"
-
     volumeMounts:
     - name: docker-config
       mountPath: /kaniko/.docker
