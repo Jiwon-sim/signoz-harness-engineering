@@ -28,11 +28,13 @@ spec:
       value: /kaniko/.docker
     resources:
       requests:
-        cpu: "1"
-        memory: "2Gi"
+        cpu: "200m"
+        memory: "1Gi"
+        ephemeral-storage: "4Gi"
       limits:
-        cpu: "2"
-        memory: "4Gi"
+        cpu: "1"
+        memory: "3Gi"
+        ephemeral-storage: "8Gi"
 
     volumeMounts:
     - name: docker-config
