@@ -10,7 +10,7 @@ spec:
   restartPolicy: Never
 
   hostAliases:
-  - ip: "10.233.52.148"
+  - ip: "192.168.20.102"
     hostnames:
     - harbor.nextonm.com
 
