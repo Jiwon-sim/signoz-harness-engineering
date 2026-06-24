@@ -5,59 +5,46 @@ pipeline {
       yaml '''
 apiVersion: v1
 kind: Pod
-metadata:
-  labels:
-    job: signoz-cicd
 spec:
   serviceAccountName: jenkins-deployer
+  restartPolicy: Never
 
   hostAliases:
-    - ip: "192.168.20.102"
-      hostnames:
-        - harbor.nextonm.com
+  - ip: "10.233.52.148"
+    hostnames:
+    - harbor.nextonm.com
 
   containers:
-    - name: kaniko
-      image: gcr.io/kaniko-project/executor:v1.23.2-debug
-      command:
-        - /busybox/cat
-      tty: true
-      resources:
-        requests:
-          cpu: "200m"
-          memory: "512Mi"
-        limits:
-          cpu: "1"
-          memory: "2Gi"
+  - name: jnlp
+    image: jenkins/inbound-agent:latest
 
-    - name: deployer
-      image: alpine/k8s:1.30.5
-      command:
-        - cat
-      tty: true
-      resources:
-        requests:
-          cpu: "100m"
-          memory: "128Mi"
-        limits:
-          cpu: "500m"
-          memory: "512Mi"
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:v1.23.2-debug
+    command:
+    - /busybox/cat
+    tty: true
+    volumeMounts:
+    - name: docker-config
+      mountPath: /kaniko/.docker
+
+  volumes:
+  - name: docker-config
+    secret:
+      secretName: harbor-docker-config
 '''
     }
   }
 
-  parameters {
-    string(name: 'HARBOR_REGISTRY', defaultValue: 'harbor.nextonm.com:30080', description: 'Harbor 주소(host:port)')
-    string(name: 'HARBOR_PROJECT', defaultValue: 'signoz', description: 'Harbor 프로젝트')
-    string(name: 'IMAGE_NAME', defaultValue: 'signoz-community', description: '이미지명')
-    string(name: 'DEPLOY_NAMESPACE', defaultValue: 'signoz', description: '배포 네임스페이스')
-    string(name: 'HELM_RELEASE', defaultValue: 'signoz', description: 'Helm 릴리스명')
-    booleanParam(name: 'REGISTRY_INSECURE', defaultValue: true, description: 'HTTP/self-signed Harbor')
-    booleanParam(name: 'DEPLOY', defaultValue: false, description: '배포 수행 여부')
+  environment {
+    REGISTRY = "harbor.nextonm.com:30080"
+    PROJECT  = "signoz"
+    IMAGE    = "custom-signoz"
   }
 
-  environment {
-    IMAGE_REPO = "${params.HARBOR_REGISTRY}/${params.HARBOR_PROJECT}/${params.IMAGE_NAME}"
+  options {
+    timestamps()
+    disableConcurrentBuilds()
+    timeout(time: 90, unit: 'MINUTES')
   }
 
   stages {
@@ -65,24 +52,46 @@ spec:
     stage('Checkout') {
       steps {
         checkout scm
+
         script {
-          env.IMAGE_TAG = sh(
-            returnStdout: true,
-            script: 'git rev-parse --short=8 HEAD'
+          env.TAG = sh(
+            script: 'git rev-parse --short=8 HEAD',
+            returnStdout: true
           ).trim()
 
-          env.FULL_IMAGE = "${env.IMAGE_REPO}:${env.IMAGE_TAG}"
+          env.FULL_IMAGE =
+            "${env.REGISTRY}/${env.PROJECT}/${env.IMAGE}:${env.TAG}"
 
-          echo "빌드 대상 이미지: ${env.FULL_IMAGE}"
+          echo "IMAGE = ${env.FULL_IMAGE}"
         }
       }
     }
 
-    stage('Image Build & Push (Kaniko)') {
+    stage('Build & Push') {
       steps {
         container('kaniko') {
-          withCredentials([
-            usernamePassword(
-              credentialsId: 'harbor-robot',
-              usernameVariable: 'HARBOR_USER',
-             
+          sh '''
+            /kaniko/executor \
+              --context "${WORKSPACE}" \
+              --dockerfile "${WORKSPACE}/Dockerfile" \
+              --destination "${FULL_IMAGE}" \
+              --build-arg VERSION="${TAG}" \
+              --insecure \
+              --skip-tls-verify \
+              --cache=false
+          '''
+        }
+      }
+    }
+  }
+
+  post {
+    success {
+      echo "Push 성공: ${env.FULL_IMAGE}"
+    }
+
+    failure {
+      echo "빌드 실패. 콘솔 로그 확인."
+    }
+  }
+}
