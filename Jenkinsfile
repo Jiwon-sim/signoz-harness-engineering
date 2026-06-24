@@ -93,7 +93,7 @@ spec:
               --insecure \
               --skip-tls-verify \
               --snapshot-mode=redo \
-              --use-new-run=true
+              --use-new-run=true \
               --cache=false
           '''
         }
