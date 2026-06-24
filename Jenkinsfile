@@ -23,6 +23,17 @@ spec:
     command:
     - /busybox/cat
     tty: true
+    env:
+    - name: DOCKER_CONFIG
+      value: /kaniko/.docker
+    resources:
+      requests:
+        cpu: "1"
+        memory: "2Gi"
+      limits:
+        cpu: "2"
+        memory: "4Gi"
+
     volumeMounts:
     - name: docker-config
       mountPath: /kaniko/.docker
@@ -81,6 +92,8 @@ spec:
               --build-arg VERSION="${TAG}" \
               --insecure \
               --skip-tls-verify \
+              --snapshot-mode=redo \
+              --use-new-run=true
               --cache=false
           '''
         }
